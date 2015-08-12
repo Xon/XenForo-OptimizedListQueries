@@ -32,7 +32,6 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
             $innerJoin = '';
         }
 
-
         return $this->fetchAllKeyed('
                 SELECT message.*,
                     user.*, IF(user.username IS NULL, message.username, user.username) AS username,
@@ -54,7 +53,8 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
                     (user_profile.user_id = message.user_id)
                 LEFT JOIN xf_user_privacy AS user_privacy ON
                     (user_privacy.user_id = message.user_id)
-                ' . $joinOptions['joinTables']
+                ' . $joinOptions['joinTables'] . ' 
+                ORDER BY message.message_date '
             , 'message_id', $conversationId);
     }
 }

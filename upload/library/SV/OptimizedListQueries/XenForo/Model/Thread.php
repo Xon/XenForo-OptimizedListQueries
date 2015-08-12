@@ -29,7 +29,8 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
                 ', $limitOptions['limit'], $limitOptions['offset']
                 ) . ') threadId
                 JOIN xf_thread AS thread on thread.thread_id = threadId.thread_id '
-            . $sqlClauses['joinTables']
+            . $sqlClauses['joinTables']. '
+            ' . $sqlClauses['orderClause']
             , 'thread_id');
     }
 
