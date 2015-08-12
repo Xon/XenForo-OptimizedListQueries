@@ -12,6 +12,27 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
         }
         $joinOptions = $this->prepareMessageFetchOptions($fetchOptions);
 
+        $safe = true;
+        $innerJoin =  $joinOptions['joinTables'];
+        // look for constructs we know affect the inner join
+        if (preg_match('/^\s*,/', $innerJoin))
+        {
+            $safe = false;
+        }
+        else
+        {
+            $escaped = preg_replace("/[\s\)]left\s+join[\s\(]/i", " ", ' '.strtolower($innerJoin));
+            if (strpos($escaped, 'join') !== false)
+            {
+                $safe = false;
+            }
+        }
+        if ($safe)
+        {
+            $innerJoin = '';
+        }
+
+
         return $this->fetchAllKeyed('
                 SELECT message.*,
                     user.*, IF(user.username IS NULL, message.username, user.username) AS username,
@@ -21,7 +42,7 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
                 FROM ( ' . $this->limitQueryResults('
                 SELECT message.message_id
                 FROM xf_conversation_message AS message
-                ' . $joinOptions['joinTables'] . '
+                    ' . $innerJoin . '
                 WHERE message.conversation_id = ?
                 ORDER BY message.message_date
                 ', $limitOptions['limit'], $limitOptions['offset']
