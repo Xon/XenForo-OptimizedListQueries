@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.0.0" version_id="10000" url="" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="load_class" execute_order="3965" callback_class="SV_OptimizedListQueries_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Thread" description="XenForo_Model_Thread"/>
+    <listener event_id="load_class" execute_order="3965" callback_class="SV_OptimizedListQueries_Listener" callback_method="load_class" active="1" hint="XenForo_Model_Conversation" description="XenForo_Model_Conversation"/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups>
+    <option option_id="sv_forumquery_threshold" edit_format="spinbox" data_type="integer" can_backup="1">
+      <default_value>150</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="performance" display_order="10100"/>
+    </option>
+    <option option_id="sv_convquery_threshold" edit_format="spinbox" data_type="integer" can_backup="1">
+      <default_value>150</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="performance" display_order="10110"/>
+    </option>
+  </optiongroups>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="option_sv_forumquery_threshold" version_id="101000" version_string="1.1.0"><![CDATA[Better Thread List Page Threshold]]></phrase>
+    <phrase title="option_sv_forumquery_threshold_explain" version_id="101000" version_string="1.1.0"><![CDATA[After the configured number of pages, replaces the query to get threads in a forum with a query optimized for <b>large</b> data sets. May be incompatible with some addons. -1 to disable.]]></phrase>
+    <phrase title="option_sv_convquery_threshold" version_id="101000" version_string="1.1.0"><![CDATA[Better Conversation List Page Threshold]]></phrase>
+    <phrase title="option_sv_convquery_threshold_explain" version_id="101000" version_string="1.1.0"><![CDATA[After the configured number of pages, replaces the query to get threads in a conversation with a query optimized for <b>large</b> data sets. Will be incompatible with some addons. -1 to disable.]]></phrase>
+  </phrases>
+  <route_prefixes/>
+  <style_properties/>
+  <templates/>
+  <public_template_modifications/>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
