@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.0.0" version_id="10000" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.0.1" version_id="10001" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
