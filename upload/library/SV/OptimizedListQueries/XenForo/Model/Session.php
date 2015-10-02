@@ -33,6 +33,7 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
         // get the minimum information required to list active users that should be seen in the 'online now' list
         $records = $db->fetchAll("
             SELECT user.user_id, user.username, user.is_staff, user.gender, user.avatar_date, user.avatar_width, user.avatar_height, user.gravatar
+                   ,user.custom_title, user.display_style_group_id, user.user_group_id, user.secondary_group_ids
                 " . $select ."
             FROM xf_session_activity AS session_activity
             JOIN xf_user AS user ON
