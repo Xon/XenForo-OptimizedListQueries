@@ -4,6 +4,10 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
 {
     protected function _getSessionActivityList()
     {
+        if (!XenForo_Application::getOptions()->sv_membersonline_query)
+        {
+            return parent::_getSessionActivityList();
+        }
         $visitor = XenForo_Visitor::getInstance();
 
         /** @var $sessionModel XenForo_Model_Session */

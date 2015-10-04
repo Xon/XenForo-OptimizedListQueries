@@ -28,7 +28,12 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
         // enforce privacy
         if (!$canBypassUserPrivacy)
         {
-            $andWhereClause .= " AND ( user_state = 'valid' and visible = 1 ) ";
+            $andWhereClause .= " AND ( user_state = 'valid' and visible = 1 ";
+            if ($forceIncludeUserId)
+            {
+                $andWhereClause .= " or user.user_id = '". $db->quote($forceIncludeUserId). "'";
+            }
+            $andWhereClause .= ") ";
         }
         // get the minimum information required to list active users that should be seen in the 'online now' list
         $records = $db->fetchAll("

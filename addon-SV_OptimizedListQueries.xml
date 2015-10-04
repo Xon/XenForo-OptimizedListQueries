@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.1.0a" version_id="1010001" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.1.1" version_id="1010100" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -16,17 +16,23 @@
   <email_templates/>
   <email_template_modifications/>
   <optiongroups>
+    <option option_id="sv_convquery_threshold" edit_format="spinbox" data_type="integer" can_backup="1">
+      <default_value>150</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="performance" display_order="10110"/>
+    </option>
     <option option_id="sv_forumquery_threshold" edit_format="spinbox" data_type="integer" can_backup="1">
       <default_value>150</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
       <relation group_id="performance" display_order="10100"/>
     </option>
-    <option option_id="sv_convquery_threshold" edit_format="spinbox" data_type="integer" can_backup="1">
-      <default_value>150</default_value>
+    <option option_id="sv_membersonline_query" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="performance" display_order="10110"/>
+      <relation group_id="performance" display_order="10120"/>
     </option>
   </optiongroups>
   <permissions>
@@ -35,10 +41,12 @@
     <interface_groups/>
   </permissions>
   <phrases>
-    <phrase title="option_sv_forumquery_threshold" version_id="101000" version_string="1.1.0"><![CDATA[Better Thread List Page Threshold]]></phrase>
-    <phrase title="option_sv_forumquery_threshold_explain" version_id="101000" version_string="1.1.0"><![CDATA[After the configured number of pages, replaces the query to get threads in a forum with a query optimized for <b>large</b> data sets. May be incompatible with some addons. -1 to disable.]]></phrase>
     <phrase title="option_sv_convquery_threshold" version_id="101000" version_string="1.1.0"><![CDATA[Better Conversation List Page Threshold]]></phrase>
     <phrase title="option_sv_convquery_threshold_explain" version_id="101000" version_string="1.1.0"><![CDATA[After the configured number of pages, replaces the query to get threads in a conversation with a query optimized for <b>large</b> data sets. Will be incompatible with some addons. -1 to disable.]]></phrase>
+    <phrase title="option_sv_forumquery_threshold" version_id="101000" version_string="1.1.0"><![CDATA[Better Thread List Page Threshold]]></phrase>
+    <phrase title="option_sv_forumquery_threshold_explain" version_id="101000" version_string="1.1.0"><![CDATA[After the configured number of pages, replaces the query to get threads in a forum with a query optimized for <b>large</b> data sets. May be incompatible with some addons. -1 to disable.]]></phrase>
+    <phrase title="option_sv_membersonline_query" version_id="1010100" version_string="1.1.1"><![CDATA[Faster Members Online Query]]></phrase>
+    <phrase title="option_sv_membersonline_query_explain" version_id="1010100" version_string="1.1.1"><![CDATA[This makes improvements for the "Members Online" Sidebar item to better scale with thousands of users online, but as a trade off only lists staff or followed user.]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>
