@@ -36,12 +36,12 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
         {
             $expiry = $options->sv_cache_nodes_members;
         }
+
         // not caching for this type of user, or if we are only caching the root node
         if (!$expiry || ($parentNode !== false && $options->sv_cache_nodes_root))
         {
             return parent::getNodeDataForListDisplay($parentNode, $displayDepth, $nodePermissions);
         }
-
 
         if (is_array($parentNode))
         {
@@ -55,8 +55,6 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
         {
             throw new XenForo_Exception('Unexpected parent node parameter passed to getNodeDataForListDisplay');
         }
-
-
 
         $cacheId = 'nodelist_'.$parentNodeId.'_'.$displayDepth.'_'.$visitor['permission_combination_id'];
         if ($raw = $cacheObject->load($cacheId, true))
