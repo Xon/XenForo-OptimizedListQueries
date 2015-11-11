@@ -36,8 +36,8 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
         {
             $expiry = $options->sv_cache_nodes_members;
         }
-        // not caching for this type of user
-        if (!$expiry)
+        // not caching for this type of user, or if we are only caching the root node
+        if (!$expiry || ($parentNode !== false && $options->sv_cache_nodes_root))
         {
             return parent::getNodeDataForListDisplay($parentNode, $displayDepth, $nodePermissions);
         }

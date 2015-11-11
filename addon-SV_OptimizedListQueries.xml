@@ -29,6 +29,12 @@
       <sub_options></sub_options>
       <relation group_id="performance" display_order="10220"/>
     </option>
+    <option option_id="sv_cache_nodes_root" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="performance" display_order="10200"/>
+    </option>
     <option option_id="sv_convquery_threshold" edit_format="spinbox" data_type="integer" can_backup="1">
       <default_value>150</default_value>
       <edit_format_params></edit_format_params>
@@ -58,6 +64,8 @@
     <phrase title="option_sv_cache_nodes_guests_explain" version_id="1020000" version_string="1.2.0"><![CDATA[In seconds. Zero to disable.]]></phrase>
     <phrase title="option_sv_cache_nodes_members" version_id="1020000" version_string="1.2.0"><![CDATA[Cache node list for members]]></phrase>
     <phrase title="option_sv_cache_nodes_members_explain" version_id="1020000" version_string="1.2.0"><![CDATA[In seconds. Zero to disable.]]></phrase>
+    <phrase title="option_sv_cache_nodes_root" version_id="1020000" version_string="1.2.0"><![CDATA[Only cache root node]]></phrase>
+    <phrase title="option_sv_cache_nodes_root_explain" version_id="1020000" version_string="1.2.0"><![CDATA[]]></phrase>
     <phrase title="option_sv_convquery_threshold" version_id="101000" version_string="1.1.0"><![CDATA[Better Conversation List Page Threshold]]></phrase>
     <phrase title="option_sv_convquery_threshold_explain" version_id="101000" version_string="1.1.0"><![CDATA[After the configured number of pages, replaces the query to get threads in a conversation with a query optimized for <b>large</b> data sets. Will be incompatible with some addons. -1 to disable.]]></phrase>
     <phrase title="option_sv_forumquery_threshold" version_id="101000" version_string="1.1.0"><![CDATA[Better Thread List Page Threshold]]></phrase>
