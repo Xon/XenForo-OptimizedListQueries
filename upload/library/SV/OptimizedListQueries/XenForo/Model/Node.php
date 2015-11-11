@@ -64,7 +64,10 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
             $nodeList = @unserialize($raw);
             if ($nodeList !== false)
             {
-                $nodeList['nodeHandlers'] = $this->getNodeHandlersForNodeTypes($this->getUniqueNodeTypeIdsFromNodeGrouped($nodeList['nodesGrouped']));
+                if (isset($nodeList['nodesGrouped']))
+                {
+                    $nodeList['nodeHandlers'] = $this->getNodeHandlersForNodeTypes($this->getUniqueNodeTypeIdsFromNodeGrouped($nodeList['nodesGrouped']));
+                }
                 return $nodeList;
             }
         }
@@ -83,10 +86,17 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
         if ($cacheObject)
         {
             // nodeHandlers are objects, so remove them from being cached.
-            $nodeHandlers = $nodeList['nodeHandlers'];
-            $nodeList['nodeHandlers'] = null;
+            $nodeHandlers = null;
+            if (isset($nodeList['nodeHandlers']) )
+            {
+                $nodeHandlers = $nodeList['nodeHandlers'];
+                $nodeList['nodeHandlers'] = null;
+            }
             $raw = serialize($nodeList);
-            $nodeList['nodeHandlers'] = $nodeHandlers;
+            if ($nodeHandlers)
+            {
+                $nodeList['nodeHandlers'] = $nodeHandlers;
+            }
             $cacheObject->save($raw, $cacheId, array(), $expiry);
         }
 
