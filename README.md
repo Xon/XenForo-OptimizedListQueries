@@ -1,8 +1,8 @@
 # XenForo-OptimizedListQueries
 
-Optimized query for getting threads in a forum with large number of threads, or for conversations with a very high page count.
+Optimized query for getting threads in a forum with large number of threads, or for conversations with a very high page count, and Likes Received.
 
-The conversations & forums use limit & offset to implement paging through the result set. 
+The Likes received, conversations & forums use limit & offset to implement paging through the result set. 
 
 Uses a better performance session activity query.
 
