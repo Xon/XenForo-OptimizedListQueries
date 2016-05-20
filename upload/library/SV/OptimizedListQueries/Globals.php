@@ -19,7 +19,7 @@ class SV_OptimizedListQueries_Globals
     public static function removeHardEnabledHooks()
     {
         // post rating hooks add overhead which can't be avoided kill the reference to them.
-
+        $changed = false;
         $listeners  = SV_OptimizedListQueries_CodeEvent::getListeners();
 
         foreach ($listeners['load_class_model'] AS &$callbacks)
