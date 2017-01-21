@@ -106,4 +106,34 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             'members' => $members,
         );
     }
+
+    public function updateUserLastActivityFromSessions($cutOffDate = null)
+    {
+        if ($cutOffDate === null)
+        {
+            $cutOffDate = XenForo_Application::$time;
+        }
+
+        $userSessions = $this->getSessionActivityRecords(array(
+            'userLimit' => 'registered',
+            'getInvisible' => true,
+            'getUnconfirmed' => true,
+            'cutOff' => array('<=', $cutOffDate),
+        ));
+
+        $db = $this->_getDb();
+
+        foreach ($userSessions AS $userSession)
+        {
+            if (isset($userSession['last_activity']) && $userSession['last_activity'] >= $userSession['view_date'])
+            {
+                continue;
+            }
+            $db->query('
+                update xf_user
+                set last_activity = ?
+                where user_id = ? and last_activity < ?
+            ', array($userSession['view_date'], $userSession['user_id'], $userSession['view_date']));
+        }
+    }
 }
