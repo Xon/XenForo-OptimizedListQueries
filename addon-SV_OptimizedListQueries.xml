@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.2.4" version_id="1020400" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.3.0" version_id="1030000" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -22,6 +22,12 @@
   <email_templates/>
   <email_template_modifications/>
   <optiongroups>
+    <option option_id="sv_cache_membersonline_query_guests" edit_format="spinbox" data_type="integer" can_backup="1">
+      <default_value>150</default_value>
+      <edit_format_params>min=0</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="performance" display_order="10310"/>
+    </option>
     <option option_id="sv_cache_nodes_guests" edit_format="spinbox" data_type="integer" can_backup="1">
       <default_value>300</default_value>
       <edit_format_params>min=0</edit_format_params>
@@ -62,7 +68,7 @@
       <default_value>0</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="performance" display_order="10120"/>
+      <relation group_id="performance" display_order="10300"/>
     </option>
   </optiongroups>
   <permissions>
@@ -71,6 +77,9 @@
     <interface_groups/>
   </permissions>
   <phrases>
+    <phrase title="option_sv_cache_membersonline_query_guests" version_id="1020302" version_string="1.2.3b"><![CDATA[Cache members online list for guests]]></phrase>
+    <phrase title="option_sv_cache_membersonline_query_guests_explain" version_id="1020302" version_string="1.2.3b"><![CDATA[Allow caching of the members online list to reduce contention on the xf_session_activity table.<br/>
+In seconds. Zero to disable.]]></phrase>
     <phrase title="option_sv_cache_nodes_guests" version_id="1020000" version_string="1.2.0"><![CDATA[Cache node list for guests]]></phrase>
     <phrase title="option_sv_cache_nodes_guests_explain" version_id="1020000" version_string="1.2.0"><![CDATA[In seconds. Zero to disable.]]></phrase>
     <phrase title="option_sv_cache_nodes_members" version_id="1020000" version_string="1.2.0"><![CDATA[Cache node list for members]]></phrase>
