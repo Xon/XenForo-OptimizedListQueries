@@ -27,7 +27,7 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
             $cacheId = 'sessionlist_0';
             if ($raw = $cacheObject->load($cacheId, true))
             {
-                $data = @json_decode($raw, true);
+                $data = @unserialize($raw, true);
                 if ($data)
                 {
                     return $data;
@@ -53,8 +53,11 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
         
         if ($expiry)
         {
-            $raw = json_encode($data);
-            $cacheObject->save($raw, $cacheId, array(), $expiry);
+            $raw = serialize($data);
+            if (is_string($raw))
+            {
+                $cacheObject->save($raw, $cacheId, array(), $expiry);
+            }
         }
 
         return $data;
