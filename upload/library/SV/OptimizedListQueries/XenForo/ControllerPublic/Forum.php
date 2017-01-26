@@ -54,7 +54,57 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
         if ($expiry)
         {
             $raw = json_encode($data);
-            $cacheObject->save($raw, $cacheId, array(), $expiry);
+            if ($raw === false)
+            {
+                $jsonError = '';
+                $val = json_last_error();
+                switch ($val) 
+                {
+                    case JSON_ERROR_NONE:
+                        $jsonError = 'No errors';
+                        break;
+                    case JSON_ERROR_DEPTH:
+                        $jsonError = 'Maximum stack depth exceeded';
+                        break;
+                    case JSON_ERROR_STATE_MISMATCH:
+                        $jsonError = 'Underflow or the modes mismatch';
+                        break;
+                    case JSON_ERROR_CTRL_CHAR:
+                        $jsonError = 'Unexpected control character found';
+                        break;
+                    case JSON_ERROR_SYNTAX:
+                        $jsonError = 'Syntax error, malformed JSON';
+                        break;
+                    case JSON_ERROR_UTF8:
+                        $jsonError = 'Malformed UTF-8 characters, possibly incorrectly encoded';
+                        break;
+                    case JSON_ERROR_RECURSION:
+                        $jsonError = 'One or more recursive references in the value to be encoded';
+                        break;
+                    case JSON_ERROR_INF_OR_NAN:
+                        $jsonError = ' One or more NAN or INF values in the value to be encoded  ';
+                        break;
+                    case JSON_ERROR_UNSUPPORTED_TYPE:
+                        $jsonError = 'A value of a type that cannot be encoded was given';
+                        break;
+/*
+                    case JSON_ERROR_INVALID_PROPERTY_NAME:
+                        $jsonError = 'A property name that cannot be encoded was given';
+                        break;
+                    case JSON_ERROR_UTF16:
+                        $jsonError = 'Malformed UTF-16 characters, possibly incorrectly encoded';
+                        break;
+*/
+                    default:
+                        $jsonError = 'Unknown error:'.$val;
+                        break;
+                }
+                XenForo_Error::logException(new Exception('Encoding failed: '.$jsonError), false);
+            }
+            else
+            {        
+                $cacheObject->save($raw, $cacheId, array(), $expiry);
+            }
         }
 
         return $data;
