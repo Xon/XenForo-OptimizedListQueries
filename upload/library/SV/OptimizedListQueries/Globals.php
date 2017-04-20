@@ -22,20 +22,23 @@ class SV_OptimizedListQueries_Globals
         $changed = false;
         $listeners  = SV_OptimizedListQueries_CodeEvent::getListeners();
 
-        foreach ($listeners['load_class_model'] AS &$callbacks)
+        if (!empty($listeners['load_class_model']))
         {
-            foreach ($callbacks AS $key => $callback)
+            foreach ($listeners['load_class_model'] AS &$callbacks)
             {
-                if ($callback[0] == 'Dark_PostRating_EventListener' || $callback[0] == 'LiquidPro_SimpleForms_Listener_Proxy')
+                foreach ($callbacks AS $key => $callback)
                 {
-                    unset($callbacks[$key]);
-                    $changed = true;
+                    if ($callback[0] == 'Dark_PostRating_EventListener' || $callback[0] == 'LiquidPro_SimpleForms_Listener_Proxy')
+                    {
+                        unset($callbacks[$key]);
+                        $changed = true;
+                    }
                 }
             }
-        }
-        if ($changed)
-        {
-            XenForo_CodeEvent::setListeners($listeners, false);
+            if ($changed)
+            {
+                XenForo_CodeEvent::setListeners($listeners, false);
+            }
         }
     }
 
