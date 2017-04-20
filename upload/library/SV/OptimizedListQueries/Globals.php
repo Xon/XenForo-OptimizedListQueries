@@ -11,8 +11,8 @@ abstract class SV_OptimizedListQueries_CodeEvent extends XenForo_CodeEvent
 // This class is used to encapsulate global state between layers without using $GLOBAL[] or
 // relying on the consumer being loaded correctly by the dynamic class autoloader
 class SV_OptimizedListQueries_Globals
-{    
-    public static $possibleNewSearch = false;
+{
+    public static $possibleNewSearch      = false;
     public static $slimPostFetchForSearch = false;
 
 
@@ -20,7 +20,7 @@ class SV_OptimizedListQueries_Globals
     {
         // post rating hooks add overhead which can't be avoided kill the reference to them.
         $changed = false;
-        $listeners  = SV_OptimizedListQueries_CodeEvent::getListeners();
+        $listeners = SV_OptimizedListQueries_CodeEvent::getListeners();
 
         if (!empty($listeners['load_class_model']))
         {
@@ -42,5 +42,5 @@ class SV_OptimizedListQueries_Globals
         }
     }
 
-    private function __construct() {}
+    private function __construct() { }
 }

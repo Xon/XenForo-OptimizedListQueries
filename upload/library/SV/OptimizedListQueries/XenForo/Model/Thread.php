@@ -17,7 +17,7 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
         $forceIndex = (!empty($fetchOptions['forceThreadIndex']) ? 'FORCE INDEX (' . $fetchOptions['forceThreadIndex'] . ')' : '');
 
         $safe = true;
-        $innerJoin =  $sqlClauses['joinTables'];
+        $innerJoin = $sqlClauses['joinTables'];
         // look for constructs we know affect the inner join
         if (preg_match('/^\s*,/', $innerJoin))
         {
@@ -25,7 +25,7 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
         }
         else
         {
-            $whitespace_normalized = preg_replace('/[\r\n]+/', ' ', ' '.strtolower($innerJoin));
+            $whitespace_normalized = preg_replace('/[\r\n]+/', ' ', ' ' . strtolower($innerJoin));
             $escaped = preg_replace('/[\s\)]left\s+join[\s\(]/', ' ', $whitespace_normalized);
             if (strpos($escaped, 'join') !== false)
             {
@@ -36,7 +36,7 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
                 $matches = array();
                 if (preg_match_all('/[\s\)]left\s+join\s+[`\w]+\s+(as\s+){0,1}([`\w]+)/', $whitespace_normalized, $matches))
                 {
-                    foreach($matches[2] as $match)
+                    foreach ($matches[2] as $match)
                     {
                         if (strpos($whereConditions, $match) !== false)
                         {
@@ -59,25 +59,31 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
                     SELECT thread.*
                         ' . $sqlClauses['selectFields'] . '
                     FROM (
-                    '. $this->limitQueryResults('
+                    ' . $this->limitQueryResults('
                         SELECT thread.thread_id
                         FROM xf_thread AS thread ' . $forceIndex . '
                         ' . $innerJoin . '
                         WHERE ' . $whereConditions . '
                         ' . $sqlClauses['orderClause'] . '
                     ', $limitOptions['limit'], $limitOptions['offset']
-                    ) . ') threadId
+                                        ) . ') threadId
                     JOIN xf_thread AS thread on thread.thread_id = threadId.thread_id '
-                . $sqlClauses['joinTables']. '
+                                        . $sqlClauses['joinTables'] . '
                 ' . $sqlClauses['orderClause']
                 , 'thread_id');
         }
-        catch(Exception $e)
+        catch (Exception $e)
         {
             // we choice poorly an generated an error
             XenForo_Error::logException($e, false, 'error running optimized query');
+
             return parent::getThreadsInForum($forumId, $conditions, $fetchOptions);
         }
     }
+}
 
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_Model_Thread extends XenForo_Model_Thread {}
 }

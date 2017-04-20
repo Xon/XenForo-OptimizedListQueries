@@ -50,7 +50,7 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
                 ($visitor['user_id'] ? $visitor->toArray() : null)
             );
         }
-        
+
         if ($expiry)
         {
             $raw = serialize($data);
@@ -62,4 +62,10 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
 
         return $data;
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XenForo_ControllerPublic_Forum {}
 }

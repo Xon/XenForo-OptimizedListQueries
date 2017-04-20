@@ -13,3 +13,9 @@ class SV_OptimizedListQueries_XenForo_Model_Search extends XFCP_SV_OptimizedList
         return parent::getViewableSearchResults($results, $viewingUser);
     }
 }
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_Model_Search extends XenForo_Model_Search {}
+}

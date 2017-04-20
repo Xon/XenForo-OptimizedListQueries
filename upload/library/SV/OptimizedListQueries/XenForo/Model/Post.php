@@ -23,3 +23,9 @@ class SV_OptimizedListQueries_XenForo_Model_Post extends XFCP_SV_OptimizedListQu
         return $sqlOptions;
     }
 }
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_Model_Post extends XenForo_Model_Post {}
+}

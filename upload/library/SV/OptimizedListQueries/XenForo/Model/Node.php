@@ -56,7 +56,7 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
             throw new XenForo_Exception('Unexpected parent node parameter passed to getNodeDataForListDisplay');
         }
 
-        $cacheId = 'nodelist_'.$parentNodeId.'_'.$displayDepth.'_'.$visitor['permission_combination_id'];
+        $cacheId = 'nodelist_' . $parentNodeId . '_' . $displayDepth . '_' . $visitor['permission_combination_id'];
         if ($raw = $cacheObject->load($cacheId, true))
         {
             $nodeList = @unserialize($raw);
@@ -66,6 +66,7 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
                 {
                     $nodeList['nodeHandlers'] = $this->getNodeHandlersForNodeTypes($this->getUniqueNodeTypeIdsFromNodeGrouped($nodeList['nodesGrouped']));
                 }
+
                 return $nodeList;
             }
         }
@@ -85,7 +86,7 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
         {
             // nodeHandlers are objects, so remove them from being cached.
             $nodeHandlers = null;
-            if (isset($nodeList['nodeHandlers']) )
+            if (isset($nodeList['nodeHandlers']))
             {
                 $nodeHandlers = $nodeList['nodeHandlers'];
                 $nodeList['nodeHandlers'] = null;
@@ -100,4 +101,10 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
 
         return $nodeList;
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_Model_Node extends XenForo_Model_Node {}
 }

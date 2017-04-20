@@ -13,7 +13,7 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
         $joinOptions = $this->prepareMessageFetchOptions($fetchOptions);
 
         $safe = true;
-        $innerJoin =  $joinOptions['joinTables'];
+        $innerJoin = $joinOptions['joinTables'];
         // look for constructs we know affect the inner join
         if (preg_match('/^\s*,/', $innerJoin))
         {
@@ -21,7 +21,7 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
         }
         else
         {
-            $escaped = preg_replace('/[\r\n]+/', " ", ' '.strtolower($innerJoin));
+            $escaped = preg_replace('/[\r\n]+/', " ", ' ' . strtolower($innerJoin));
             $escaped = preg_replace('/[\s\)]left\s+join[\s\(]/', ' ', $escaped);
             if (strpos($escaped, 'join') !== false)
             {
@@ -48,7 +48,7 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
                     WHERE message.conversation_id = ?
                     ORDER BY message.message_date
                     ', $limitOptions['limit'], $limitOptions['offset']
-                    ). ') ConvMessageId
+                                        ) . ') ConvMessageId
                     JOIN xf_conversation_message AS message on message.message_id = ConvMessageId.message_id
                     LEFT JOIN xf_user AS user ON
                         (user.user_id = message.user_id)
@@ -60,11 +60,18 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
                     ORDER BY message.message_date '
                 , 'message_id', $conversationId);
         }
-        catch(Exception $e)
+        catch (Exception $e)
         {
             // we choice poorly an generated an error
             XenForo_Error::logException($e, false, 'error running optimized query');
+
             return parent::getThreadsInForum($forumId, $conditions, $fetchOptions);
         }
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_Model_Conversation extends XenForo_Model_Conversation {}
 }

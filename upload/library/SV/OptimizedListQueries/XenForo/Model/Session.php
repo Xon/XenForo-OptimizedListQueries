@@ -17,9 +17,9 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             $select .= " ,(follow.user_id is not null) as followed";
             $joins .= "
             LEFT JOIN xf_user_follow AS follow ON
-                (follow.follow_user_id = session_activity.user_id and follow.user_id = '". $db->quote($forceIncludeUserId)."' )
+                (follow.follow_user_id = session_activity.user_id and follow.user_id = '" . $db->quote($forceIncludeUserId) . "' )
             ";
-            $orWhereClause .= " or follow.user_id is not null or user.user_id = '". $db->quote($forceIncludeUserId). "'";
+            $orWhereClause .= " or follow.user_id is not null or user.user_id = '" . $db->quote($forceIncludeUserId) . "'";
         }
         else
         {
@@ -31,7 +31,7 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             $andWhereClause .= " AND ( user_state = 'valid' and visible = 1 ";
             if ($forceIncludeUserId)
             {
-                $andWhereClause .= " or user.user_id = '". $db->quote($forceIncludeUserId). "'";
+                $andWhereClause .= " or user.user_id = '" . $db->quote($forceIncludeUserId) . "'";
             }
             $andWhereClause .= ") ";
         }
@@ -39,12 +39,12 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
         $records = $db->fetchAll("
             SELECT user.user_id, user.username, user.is_staff, user.gender, user.avatar_date, user.avatar_width, user.avatar_height, user.gravatar
                    ,user.custom_title, user.display_style_group_id, user.user_group_id, user.secondary_group_ids
-                " . $select ."
+                " . $select . "
             FROM xf_session_activity AS session_activity
             JOIN xf_user AS user ON
                 (user.user_id = session_activity.user_id)
             " . $joins . "
-            WHERE (session_activity.view_date > ?) AND (user.is_staff = 1 ". $orWhereClause.") ". $andWhereClause ."
+            WHERE (session_activity.view_date > ?) AND (user.is_staff = 1 " . $orWhereClause . ") " . $andWhereClause . "
             ORDER BY session_activity.view_date DESC
         ", $conditions['cutOff']);
 
@@ -78,26 +78,32 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
     {
         $db = $this->_getDb();
         $totals = $db->fetchAll("
-            SELECT is_robot, is_guest, COUNT(*) as count
-            from (
-                SELECT (robot_key <> '') as is_robot, (user_id = 0) as is_guest
+            SELECT is_robot, is_guest, COUNT(*) AS count
+            FROM (
+                SELECT (robot_key <> '') AS is_robot, (user_id = 0) AS is_guest
                 FROM xf_session_activity AS session_activity
                 WHERE (session_activity.view_date > ?)
             ) a
-            group by is_robot, is_guest
+            GROUP BY is_robot, is_guest
         ", $cutOff);
 
         $guests = 0;
         $robots = 0;
         $members = 0;
-        foreach($totals as $total)
+        foreach ($totals as $total)
         {
             if ($total['is_robot'])
+            {
                 $robots = $total['count'];
+            }
             else if ($total['is_guest'])
+            {
                 $guests = $total['count'];
+            }
             else
+            {
                 $members = $total['count'];
+            }
         }
 
         return array(
@@ -115,11 +121,11 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
         }
 
         $userSessions = $this->getSessionActivityRecords(array(
-            'userLimit' => 'registered',
-            'getInvisible' => true,
-            'getUnconfirmed' => true,
-            'cutOff' => array('<=', $cutOffDate),
-        ));
+                                                             'userLimit' => 'registered',
+                                                             'getInvisible' => true,
+                                                             'getUnconfirmed' => true,
+                                                             'cutOff' => array('<=', $cutOffDate),
+                                                         ));
 
         $db = $this->_getDb();
 
@@ -130,10 +136,16 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
                 continue;
             }
             $db->query('
-                update xf_user
-                set last_activity = ?
-                where user_id = ? and last_activity < ?
+                UPDATE xf_user
+                SET last_activity = ?
+                WHERE user_id = ? AND last_activity < ?
             ', array($userSession['view_date'], $userSession['user_id'], $userSession['view_date']));
         }
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_Model_Session extends XenForo_Model_Session {}
 }

@@ -10,11 +10,11 @@ class SV_OptimizedListQueries_XenForo_Model_Like extends XFCP_SV_OptimizedListQu
         {
             return parent::getLikesForContentUser($userId, $fetchOptions);
         }
-        
-        return $this->fetchAllKeyed( 'SELECT liked_content.*, user.*
-            from 
+
+        return $this->fetchAllKeyed('SELECT liked_content.*, user.*
+            FROM 
             (
-                '. $this->limitQueryResults('SELECT like_id
+                ' . $this->limitQueryResults('SELECT like_id
                 FROM xf_liked_content
                 WHERE content_user_id = ?
                 ORDER BY like_date DESC
@@ -23,4 +23,10 @@ class SV_OptimizedListQueries_XenForo_Model_Like extends XFCP_SV_OptimizedListQu
             LEFT JOIN xf_user AS user ON (user.user_id = liked_content.like_user_id)
             ', 'like_id', $userId);
     }
+}
+
+// ******************** FOR IDE AUTO COMPLETE ********************
+if (false)
+{
+    class XFCP_SV_OptimizedListQueries_XenForo_Model_Like extends XenForo_Model_Like {}
 }
