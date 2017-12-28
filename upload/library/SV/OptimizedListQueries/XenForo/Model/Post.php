@@ -7,8 +7,13 @@ class SV_OptimizedListQueries_XenForo_Model_Post extends XFCP_SV_OptimizedListQu
         if (SV_OptimizedListQueries_Globals::$slimPostFetchForSearch)
         {
             $fetchOptions['skip_wordcount'] = true;
-            if (!empty($fetchOptions['join']) && class_exists('Sidane_Threadmarks_Model_Post', false))
+            if (class_exists('Sidane_Threadmarks_XenForo_Model_Post', false))
             {
+                $fetchOptions['includeThreadmark'] = false;
+            }
+            else if (!empty($fetchOptions['join']) && class_exists('Sidane_Threadmarks_Model_Post', false))
+            {
+                /** @noinspection PhpUndefinedClassInspection */
                 $fetchOptions['join'] &= ~Sidane_Threadmarks_Model_Post::FETCH_THREADMARKS;
             }
         }
