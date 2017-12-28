@@ -2,7 +2,7 @@
 
 class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedListQueries_XenForo_Model_Thread
 {
-    public function getThreadsInForum($forumId, array $conditions = array(), array $fetchOptions = array())
+    public function getThreadsInForum($forumId, array $conditions = [], array $fetchOptions = [])
     {
         $limitOptions = $this->prepareLimitFetchOptions($fetchOptions);
         $sv_forumquery_threshold = XenForo_Application::getOptions()->sv_forumquery_threshold;
@@ -33,7 +33,7 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
             }
             else
             {
-                $matches = array();
+                $matches = [];
                 if (preg_match_all('/[\s\)]left\s+join\s+[`\w]+\s+(as\s+){0,1}([`\w]+)/', $whitespace_normalized, $matches))
                 {
                     foreach ($matches[2] as $match)
@@ -55,22 +55,25 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
 
         try
         {
-            return $this->fetchAllKeyed('
+            return $this->fetchAllKeyed(
+                '
                     SELECT thread.*
                         ' . $sqlClauses['selectFields'] . '
                     FROM (
-                    ' . $this->limitQueryResults('
+                    ' . $this->limitQueryResults(
+                    '
                         SELECT thread.thread_id
                         FROM xf_thread AS thread ' . $forceIndex . '
                         ' . $innerJoin . '
                         WHERE ' . $whereConditions . '
                         ' . $sqlClauses['orderClause'] . '
                     ', $limitOptions['limit'], $limitOptions['offset']
-                                        ) . ') threadId
+                ) . ') threadId
                     JOIN xf_thread AS thread on thread.thread_id = threadId.thread_id '
-                                        . $sqlClauses['joinTables'] . '
+                . $sqlClauses['joinTables'] . '
                 ' . $sqlClauses['orderClause']
-                , 'thread_id');
+                , 'thread_id'
+            );
         }
         catch (Exception $e)
         {

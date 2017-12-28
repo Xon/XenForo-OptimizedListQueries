@@ -2,9 +2,11 @@
 
 class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedListQueries_XenForo_Model_Session
 {
-    public function getSessionActivityQuickListFast(array $viewingUser, array $conditions = array(), array $forceInclude = null)
+    public function getSessionActivityQuickListFast(array $viewingUser, array $conditions = [], array $forceInclude = null)
     {
-        $canBypassUserPrivacy = $this->getModelFromCache('XenForo_Model_User')->canBypassUserPrivacy();
+        /** @var XenForo_Model_User $userModel */
+        $userModel = $this->getModelFromCache('XenForo_Model_User');
+        $canBypassUserPrivacy = $userModel->canBypassUserPrivacy();
         $forceIncludeUserId = ($forceInclude ? $forceInclude['user_id'] : 0);
 
         $db = $this->_getDb();
@@ -36,7 +38,8 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             $andWhereClause .= ") ";
         }
         // get the minimum information required to list active users that should be seen in the 'online now' list
-        $records = $db->fetchAll("
+        $records = $db->fetchAll(
+            "
             SELECT user.user_id, user.username, user.is_staff, user.gender, user.avatar_date, user.avatar_width, user.avatar_height, user.gravatar
                    ,user.custom_title, user.display_style_group_id, user.user_group_id, user.secondary_group_ids
                 " . $select . "
@@ -46,7 +49,8 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             " . $joins . "
             WHERE (session_activity.view_date > ?) AND (user.is_staff = 1 " . $orWhereClause . ") " . $andWhereClause . "
             ORDER BY session_activity.view_date DESC
-        ", $conditions['cutOff']);
+        ", $conditions['cutOff']
+        );
 
         $limit = XenForo_Application::get('options')->membersOnlineLimit;
         $output = $this->getOnlineStats($conditions['cutOff']);
@@ -77,7 +81,8 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
     protected function getOnlineStats($cutOff)
     {
         $db = $this->_getDb();
-        $totals = $db->fetchAll("
+        $totals = $db->fetchAll(
+            "
             SELECT is_robot, is_guest, COUNT(*) AS count
             FROM (
                 SELECT (robot_key <> '') AS is_robot, (user_id = 0) AS is_guest
@@ -85,7 +90,8 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
                 WHERE (session_activity.view_date > ?)
             ) a
             GROUP BY is_robot, is_guest
-        ", $cutOff);
+        ", $cutOff
+        );
 
         $guests = 0;
         $robots = 0;
@@ -106,11 +112,11 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             }
         }
 
-        return array(
-            'guests' => $guests,
-            'robots' => $robots,
+        return [
+            'guests'  => $guests,
+            'robots'  => $robots,
             'members' => $members,
-        );
+        ];
     }
 
     public function updateUserLastActivityFromSessions($cutOffDate = null)
@@ -120,12 +126,14 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             $cutOffDate = XenForo_Application::$time;
         }
 
-        $userSessions = $this->getSessionActivityRecords(array(
-                                                             'userLimit' => 'registered',
-                                                             'getInvisible' => true,
-                                                             'getUnconfirmed' => true,
-                                                             'cutOff' => array('<=', $cutOffDate),
-                                                         ));
+        $userSessions = $this->getSessionActivityRecords(
+            [
+                'userLimit'      => 'registered',
+                'getInvisible'   => true,
+                'getUnconfirmed' => true,
+                'cutOff'         => ['<=', $cutOffDate],
+            ]
+        );
 
         $db = $this->_getDb();
 
@@ -135,11 +143,13 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             {
                 continue;
             }
-            $db->query('
+            $db->query(
+                '
                 UPDATE xf_user
                 SET last_activity = ?
                 WHERE user_id = ? AND last_activity < ?
-            ', array($userSession['view_date'], $userSession['user_id'], $userSession['view_date']));
+            ', [$userSession['view_date'], $userSession['user_id'], $userSession['view_date']]
+            );
         }
     }
 }

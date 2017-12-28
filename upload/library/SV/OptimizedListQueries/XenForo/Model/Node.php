@@ -4,7 +4,7 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
 {
     public function getUniqueNodeTypeIdsFromNodeGrouped(array $nodes)
     {
-        $output = array();
+        $output = [];
         foreach ($nodes AS $group)
         {
             foreach ($group AS $node)
@@ -96,7 +96,7 @@ class SV_OptimizedListQueries_XenForo_Model_Node extends XFCP_SV_OptimizedListQu
             {
                 $nodeList['nodeHandlers'] = $nodeHandlers;
             }
-            $cacheObject->save($raw, $cacheId, array(), $expiry);
+            $cacheObject->save($raw, $cacheId, [], $expiry);
         }
 
         return $nodeList;

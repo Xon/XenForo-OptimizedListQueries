@@ -16,10 +16,6 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
             {
                 $expiry = $options->sv_cache_membersonline_query_guests;
             }
-            else
-            {
-                // todo ...
-            }
         }
 
         if ($expiry)
@@ -41,12 +37,12 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
         }
         else
         {
-            /** @var $sessionModel XenForo_Model_Session */
+            /** @var SV_OptimizedListQueries_XenForo_Model_Session $sessionModel */
             $sessionModel = $this->getModelFromCache('XenForo_Model_Session');
 
             $data = $sessionModel->getSessionActivityQuickListFast(
                 $visitor->toArray(),
-                array('cutOff' => $sessionModel->getOnlineStatusTimeout()),
+                ['cutOff' => $sessionModel->getOnlineStatusTimeout()],
                 ($visitor['user_id'] ? $visitor->toArray() : null)
             );
         }
@@ -56,7 +52,7 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
             $raw = serialize($data);
             if (is_string($raw))
             {
-                $cacheObject->save($raw, $cacheId, array(), $expiry);
+                $cacheObject->save($raw, $cacheId, [], $expiry);
             }
         }
 
