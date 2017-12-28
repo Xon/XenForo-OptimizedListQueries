@@ -65,7 +65,7 @@ class SV_OptimizedListQueries_XenForo_Model_Conversation extends XFCP_SV_Optimiz
             // we choice poorly an generated an error
             XenForo_Error::logException($e, false, 'error running optimized query');
 
-            return parent::getConversationMessages($forumId, $conditions, $fetchOptions);
+            return parent::getConversationMessages($conversationId, $fetchOptions);
         }
     }
 }
