@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.3.4" version_id="1030400" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+<addon addon_id="SV_OptimizedListQueries" title="Optimized List Queries" version_string="1.3.5" version_id="1030500" url="https://xenforo.com/community/resources/optimized-list-queries-by-xon.4487/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -70,6 +70,12 @@
       <sub_options></sub_options>
       <relation group_id="performance" display_order="10300"/>
     </option>
+    <option option_id="sv_rssglobalquery" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value></default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="performance" display_order="10140"/>
+    </option>
   </optiongroups>
   <permissions>
     <permission_groups/>
@@ -94,6 +100,8 @@ In seconds. Zero to disable.]]></phrase>
     <phrase title="option_sv_likequery_threshold_explain" version_id="1020100" version_string="1.2.1"><![CDATA[After the configured number of pages, replaces the query to get Likes Received with a query optimized for <b>large</b> data sets. May be incompatible with some addons. -1 to disable.]]></phrase>
     <phrase title="option_sv_membersonline_query" version_id="1010100" version_string="1.1.1"><![CDATA[Faster Members Online Query]]></phrase>
     <phrase title="option_sv_membersonline_query_explain" version_id="1010100" version_string="1.1.1"><![CDATA[This makes improvements for the "Members Online" Sidebar item to better scale with thousands of users online, but as a trade off only lists staff or followed user.]]></phrase>
+    <phrase title="option_sv_rssglobalquery" version_id="1030500" version_string="1.3.5"><![CDATA[Better Global RSS Thread List]]></phrase>
+    <phrase title="option_sv_rssglobalquery_explain" version_id="1030500" version_string="1.3.5"><![CDATA[Use an improved query for the global rss, only works well for large number of threads.]]></phrase>
   </phrases>
   <route_prefixes/>
   <style_properties/>

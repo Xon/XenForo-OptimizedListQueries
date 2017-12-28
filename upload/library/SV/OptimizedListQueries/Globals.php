@@ -12,6 +12,7 @@ abstract class SV_OptimizedListQueries_CodeEvent extends XenForo_CodeEvent
 // relying on the consumer being loaded correctly by the dynamic class autoloader
 class SV_OptimizedListQueries_Globals
 {
+    public static $globalRss              = false;
     public static $possibleNewSearch      = false;
     public static $slimPostFetchForSearch = false;
 

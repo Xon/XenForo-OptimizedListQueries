@@ -58,6 +58,15 @@ class SV_OptimizedListQueries_XenForo_ControllerPublic_Forum extends XFCP_SV_Opt
 
         return $data;
     }
+
+    public function getGlobalForumRss()
+    {
+        if (XenForo_Application::getOptions()->sv_rssglobalquery)
+        {
+            SV_OptimizedListQueries_Globals::$globalRss = true;
+        }
+        return parent::getGlobalForumRss();
+    }
 }
 
 // ******************** FOR IDE AUTO COMPLETE ********************
