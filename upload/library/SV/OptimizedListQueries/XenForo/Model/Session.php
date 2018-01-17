@@ -2,41 +2,45 @@
 
 class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedListQueries_XenForo_Model_Session
 {
-    public function getSessionActivityQuickListFast(array $viewingUser, array $conditions = [], array $forceInclude = null)
+    public function getSessionActivityQuickListFast(array $viewingUser, array $conditions = [], array $forceIncludeUser = null)
     {
         /** @var XenForo_Model_User $userModel */
         $userModel = $this->getModelFromCache('XenForo_Model_User');
         $canBypassUserPrivacy = $userModel->canBypassUserPrivacy();
-        $forceIncludeUserId = ($forceInclude ? $forceInclude['user_id'] : 0);
+        $forceIncludeUserId = ($forceIncludeUser ? $forceIncludeUser['user_id'] : 0);
 
         $db = $this->_getDb();
         $joins = '';
         $orWhereClause = '';
         $andWhereClause = '';
         $select = '';
+        $args = [];
         if ($forceIncludeUserId)
         {
             $select .= " (follow.user_id is not null) ";
             $joins .= "
             LEFT JOIN xf_user_follow AS follow ON
-                (follow.user_id = '" . $db->quote($forceIncludeUserId) . "' AND follow.follow_user_id = session_activity.user_id)
+                (follow.user_id = ? AND follow.follow_user_id = session_activity.user_id)
             ";
-            $orWhereClause .= " or follow.user_id is not null or session_activity.user_id = '" . $db->quote($forceIncludeUserId) . "'";
+            $args[] = $forceIncludeUserId;
+            $orWhereClause .= " or follow.user_id is not null";
         }
         else
         {
             $select .= " 0 ";
         }
+        $args[] = $conditions['cutOff'];
         // enforce privacy
         if (!$canBypassUserPrivacy)
         {
-            $andWhereClause .= " AND ( user_state = 'valid' and visible = 1 ";
-            if ($forceIncludeUserId)
-            {
-                $andWhereClause .= " or session_activity.user_id = '" . $db->quote($forceIncludeUserId) . "'";
-            }
-            $andWhereClause .= ") ";
+            $andWhereClause .= " AND ( user_state = 'valid' and visible = 1) ";
         }
+        if ($forceIncludeUserId)
+        {
+            $args[] = $forceIncludeUserId;
+            $andWhereClause .= " AND session_activity.user_id <> ?";
+        }
+
         // get the minimum information required to list active users that should be seen in the 'online now' list
         $records = $db->fetchAll(
             "
@@ -47,13 +51,19 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
                 FROM xf_session_activity AS session_activity
                 JOIN xf_user AS user ON
                     (user.user_id = session_activity.user_id)
-                " . $joins . "
-                WHERE (session_activity.view_date > ?) AND (user.is_staff = 1 " . $orWhereClause . ") " . $andWhereClause . "
+                {$joins}
+                WHERE (session_activity.view_date > ?)  {$andWhereClause} AND (user.is_staff = 1 {$orWhereClause})
                 ORDER BY session_activity.view_date DESC
             ) a
             JOIN xf_user AS user ON (user.user_id = a.user_id)
-        ", $conditions['cutOff']
+        ", $args
         );
+
+        if ($forceIncludeUserId)
+        {
+            $forceIncludeUser['followed'] = 0;
+            array_unshift($records, $forceIncludeUser);
+        }
 
         $limit = XenForo_Application::get('options')->membersOnlineLimit;
         $output = $this->getOnlineStats($conditions['cutOff']);
