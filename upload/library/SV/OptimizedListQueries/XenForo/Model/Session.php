@@ -16,7 +16,7 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
         $select = '';
         if ($forceIncludeUserId)
         {
-            $select .= " ,(follow.user_id is not null) as followed";
+            $select .= " (follow.user_id is not null) ";
             $joins .= "
             LEFT JOIN xf_user_follow AS follow ON
                 (follow.user_id = '" . $db->quote($forceIncludeUserId) . "' AND follow.follow_user_id = session_activity.user_id)
@@ -25,7 +25,7 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
         }
         else
         {
-            $select .= " ,0 as followed";
+            $select .= " 0 ";
         }
         // enforce privacy
         if (!$canBypassUserPrivacy)
@@ -41,14 +41,17 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
         $records = $db->fetchAll(
             "
             SELECT user.user_id, user.username, user.is_staff, user.gender, user.avatar_date, user.avatar_width, user.avatar_height, user.gravatar
-                   ,user.custom_title, user.display_style_group_id, user.user_group_id, user.secondary_group_ids
-                " . $select . "
-            FROM xf_session_activity AS session_activity
-            JOIN xf_user AS user ON
-                (user.user_id = session_activity.user_id)
-            " . $joins . "
-            WHERE (session_activity.view_date > ?) AND (user.is_staff = 1 " . $orWhereClause . ") " . $andWhereClause . "
-            ORDER BY session_activity.view_date DESC
+                   ,user.custom_title, user.display_style_group_id, user.user_group_id, user.secondary_group_ids, a.followed
+            FROM (
+                select session_activity.user_id, {$select} as followed
+                FROM xf_session_activity AS session_activity
+                JOIN xf_user AS user ON
+                    (user.user_id = session_activity.user_id)
+                " . $joins . "
+                WHERE (session_activity.view_date > ?) AND (user.is_staff = 1 " . $orWhereClause . ") " . $andWhereClause . "
+                ORDER BY session_activity.view_date DESC
+            ) a
+            JOIN xf_user AS user ON (user.user_id = a.user_id)
         ", $conditions['cutOff']
         );
 
