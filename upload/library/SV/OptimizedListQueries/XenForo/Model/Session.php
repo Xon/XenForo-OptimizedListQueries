@@ -19,9 +19,9 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             $select .= " ,(follow.user_id is not null) as followed";
             $joins .= "
             LEFT JOIN xf_user_follow AS follow ON
-                (follow.follow_user_id = session_activity.user_id and follow.user_id = '" . $db->quote($forceIncludeUserId) . "' )
+                (follow.user_id = '" . $db->quote($forceIncludeUserId) . "' AND follow.follow_user_id = session_activity.user_id)
             ";
-            $orWhereClause .= " or follow.user_id is not null or user.user_id = '" . $db->quote($forceIncludeUserId) . "'";
+            $orWhereClause .= " or follow.user_id is not null or session_activity.user_id = '" . $db->quote($forceIncludeUserId) . "'";
         }
         else
         {
@@ -33,7 +33,7 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             $andWhereClause .= " AND ( user_state = 'valid' and visible = 1 ";
             if ($forceIncludeUserId)
             {
-                $andWhereClause .= " or user.user_id = '" . $db->quote($forceIncludeUserId) . "'";
+                $andWhereClause .= " or session_activity.user_id = '" . $db->quote($forceIncludeUserId) . "'";
             }
             $andWhereClause .= ") ";
         }
