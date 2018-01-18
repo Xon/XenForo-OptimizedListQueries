@@ -47,7 +47,7 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
             SELECT user.user_id, user.username, user.is_staff, user.gender, user.avatar_date, user.avatar_width, user.avatar_height, user.gravatar
                    ,user.custom_title, user.display_style_group_id, user.user_group_id, user.secondary_group_ids, a.followed
             FROM (
-                select session_activity.user_id, {$select} as followed
+                select session_activity.user_id, session_activity.view_date, {$select} as followed
                 FROM xf_session_activity AS session_activity
                 JOIN xf_user AS user ON
                     (user.user_id = session_activity.user_id)
@@ -56,6 +56,7 @@ class SV_OptimizedListQueries_XenForo_Model_Session extends XFCP_SV_OptimizedLis
                 ORDER BY session_activity.view_date DESC
             ) a
             JOIN xf_user AS user ON (user.user_id = a.user_id)
+            ORDER BY a.view_date DESC
         ", $args
         );
 
