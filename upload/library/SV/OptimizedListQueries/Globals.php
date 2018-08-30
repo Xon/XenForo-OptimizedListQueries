@@ -15,6 +15,7 @@ class SV_OptimizedListQueries_Globals
     public static $globalRss              = false;
     public static $possibleNewSearch      = false;
     public static $slimPostFetchForSearch = false;
+    public static $replaceThreadCounterShim = false;
 
 
     public static function removeHardEnabledHooks()

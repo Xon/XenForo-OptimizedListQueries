@@ -163,6 +163,45 @@ class SV_OptimizedListQueries_XenForo_Model_Thread extends XFCP_SV_OptimizedList
             return parent::getThreadsInForum($forumId, $conditions, $fetchOptions);
         }
     }
+
+    public function mergeThreads(array $threads, $targetThreadId, array $options = array())
+    {
+        SV_OptimizedListQueries_Globals::$replaceThreadCounterShim = true;
+        try
+        {
+            return parent::mergeThreads($threads, $targetThreadId, $options);
+        }
+        finally
+        {
+            SV_OptimizedListQueries_Globals::$replaceThreadCounterShim = false;
+        }
+    }
+
+    public function replaceThreadUserPostCounters($threadId, array $counters, $userId = null)
+    {
+        if (!SV_OptimizedListQueries_Globals::$replaceThreadCounterShim || $userId)
+        {
+            parent::replaceThreadUserPostCounters($threadId, $counters, $userId);
+
+            return;
+        }
+
+        $db = $this->_getDb();
+
+        XenForo_Db::beginTransaction($db);
+        $db->beginTransaction();
+        $db->query('delete from xf_thread_user_post where thread_id = ?', $threadId);
+        $db->query("
+			INSERT INTO xf_thread_user_post (thread_id, user_id, post_count)
+			SELECT thread_id, user_id, COUNT(*)
+			FROM xf_post
+			WHERE thread_id = ?
+				AND message_state = 'visible'
+				AND user_id > 0
+			GROUP BY user_id
+		", $threadId);
+        XenForo_Db::commit($db);
+    }
 }
 
 // ******************** FOR IDE AUTO COMPLETE ********************
