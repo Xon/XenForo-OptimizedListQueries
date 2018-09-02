@@ -1,6 +1,6 @@
 <?php
 
-class SV_OptimizedListQueries_XenForo_DataWriter_Discussion_Thread extends XFCP_XenForo_DataWriter_Discussion_Thread
+class SV_OptimizedListQueries_XenForo_DataWriter_Discussion_Thread extends XFCP_SV_OptimizedListQueries_XenForo_DataWriter_Discussion_Thread
 {
     public function rebuildDiscussion()
     {
@@ -18,5 +18,5 @@ class SV_OptimizedListQueries_XenForo_DataWriter_Discussion_Thread extends XFCP_
 
 if (false)
 {
-    class XFCP_XenForo_DataWriter_Discussion_Thread extends XenForo_DataWriter_Discussion_Thread {}
+    class XFCP_SV_OptimizedListQueries_XenForo_DataWriter_Discussion_Thread extends XenForo_DataWriter_Discussion_Thread {}
 }
