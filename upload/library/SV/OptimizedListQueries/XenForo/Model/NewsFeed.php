@@ -27,10 +27,12 @@ class SV_OptimizedListQueries_XenForo_Model_NewsFeed extends XFCP_SV_OptimizedLi
             // ----------------------
             switch($operator)
             {
-                case '>':
                 case '>=':
-                case '=':
-                    $eventDate = $this->_db->fetchOne('select event_date from xf_news_feed where news_feed_id > ' . $db->quote($newsFeedId) . ' limit 1');
+                case '>':
+                case '<=':
+                case '<':
+                    $eventDateOperator = $operator[0] . '=';
+                    $eventDate = $this->_db->fetchOne("select event_date from xf_news_feed where news_feed_id $eventDateOperator " . $db->quote($newsFeedId) . ' limit 1');
                     if (!$eventDate)
                     {
                         return [];
@@ -38,10 +40,8 @@ class SV_OptimizedListQueries_XenForo_Model_NewsFeed extends XFCP_SV_OptimizedLi
 
                     $sqlConditions[] = "news_feed.event_date $operator " . $db->quote($eventDate);
                     break;
-                default:
-                    $sqlConditions[] = "news_feed.news_feed_id $operator " . $db->quote($newsFeedId);
-                    break;
             }
+            $sqlConditions[] = "news_feed.news_feed_id $operator " . $db->quote($newsFeedId);
             // ----------------------
         }
 
