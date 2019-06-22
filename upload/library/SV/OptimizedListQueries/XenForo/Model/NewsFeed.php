@@ -32,16 +32,16 @@ class SV_OptimizedListQueries_XenForo_Model_NewsFeed extends XFCP_SV_OptimizedLi
                 case '<=':
                 case '<':
                     $eventDateOperator = $operator[0] . '=';
-                    $eventDate = $this->_db->fetchOne("select event_date from xf_news_feed where news_feed_id $eventDateOperator " . $db->quote($newsFeedId) . ' limit 1');
+                    $eventDate = $this->_db->fetchOne("select event_date from xf_news_feed where news_feed_id {$eventDateOperator} " . $db->quote($newsFeedId) . ' ORDER BY event_date DESC limit 1');
                     if (!$eventDate)
                     {
                         return [];
                     }
 
-                    $sqlConditions[] = "news_feed.event_date $operator " . $db->quote($eventDate);
+                    $sqlConditions[] = "news_feed.event_date {$eventDateOperator} " . $db->quote($eventDate);
                     break;
             }
-            $sqlConditions[] = "news_feed.news_feed_id $operator " . $db->quote($newsFeedId);
+            $sqlConditions[] = "news_feed.news_feed_id {$operator} " . $db->quote($newsFeedId);
             // ----------------------
         }
 
